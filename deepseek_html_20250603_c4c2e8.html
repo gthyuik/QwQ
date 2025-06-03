@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江苏吴歌数据库 - 多模态非遗保护平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2a6b5e;
+            --primary-light: #3d8e7d;
+            --secondary: #8c6d46;
+            --accent: #c53d2c;
+            --light: #f0f7f5;
+            --dark: #1a3c35;
+            --gray: #e0e6e4;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            color: #333;
+            background-color: #fafafa;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Noto Serif SC', serif;
+            color: var(--dark);
+            font-weight: 700;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部导航 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-text span {
+            color: var(--secondary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(rgba(42, 107, 94, 0.85), rgba(42, 107, 94, 0.9)), url('https://images.unsplash.com/photo-1542662565-7e4b66bae529?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1771&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 5px;
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px 0 0 50px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-box button:hover {
+            background: var(--primary-light);
+        }
+        
+        .voice-search {
+            background: var(--gray);
+            border: none;
+            padding: 0 15px;
+            cursor: pointer;
+            color: var(--dark);
+            transition: color 0.3s;
+        }
+        
+        .voice-search:hover {
+            color: var(--primary);
+        }
+        
+        /* 用户服务区域 */
+        .user-services {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .service-card p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        
+        .service-card .btn {
+            font-size: 0.9rem;
+            padding: 6px 15px;
+        }
+        
+        /* 功能展示区域 */
+        .features {
+            padding: 80px 0;
+        }
+        
+        .feature-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 10px;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: var(--gray);
+            border: none;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .feature-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .feature-text {
+            padding: 25px;
+        }
+        
+        .feature-text h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* 数据统计 */
+        .stats {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        /* 合作伙伴 */
+        .partners {
+            padding: 80px 0;
+            background: var(--light);
+        }
+        
+        .partner-logos {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .partner-logo {
+            height: 60px;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s;
+        }
+        
+        .partner-logo:hover {
+            filter: grayscale(0);
+            opacity: 1;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .feature-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="./logo.jpg"alt="吴歌"></img>
+                    <div class="logo-text">江苏<span>吴歌</span>数据库</div>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active">首页</a>
+                    <a href="#">吴歌地图</a>
+                    <a href="#">时间轴</a>
+                    <a href="#">多媒体库</a>
+                    <a href="#">研究资源</a>
+                    <a href="#">文旅应用</a>
+                    <a href="#">关于我们</a>
+                </div>
+                <div class="nav-actions">
+                    <a href="#" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> 登录</a>
+                    <a href="#" class="btn btn-primary"><i class="fas fa-user-plus"></i> 注册</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>守护吴韵之声，传承千年文脉</h1>
+                <p>首个国家级非物质文化遗产江苏吴歌多模态数据库，整合文本、音频、视频资源，打造学术研究与文化传承的数字平台</p>
+                
+                <div class="search-box">
+                    <input type="text" placeholder="搜索吴歌、地区、传承人或关键词...">
+                    <button><i class="fas fa-search"></i> 搜索</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户服务区域 -->
+    <section class="user-services">
+        <div class="container">
+            <div class="section-title">
+                <h2>为不同用户提供专业服务</h2>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>学术研究者</h3>
+                    <p>获取吴语语音、歌词结构等研究素材，访问多模态数据库与可视化分析工具</p>
+                    <a href="#" class="btn btn-outline">进入研究平台</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>教育工作者</h3>
+                    <p>获取教学资源包，开设吴歌赏析课程，培养年轻传承人</p>
+                    <a href="#" class="btn btn-outline">查看教育资源</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>文旅从业者</h3>
+                    <p>开发"吴歌体验"项目，获取实景演出资料与非遗工坊合作方案</p>
+                    <a href="#" class="btn btn-outline">文旅应用方案</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>文化爱好者</h3>
+                    <p>欣赏吴歌多媒体作品，参与线上活动，了解吴地文化历史</p>
+                    <a href="#" class="btn btn-outline">探索吴歌世界</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能展示区域 -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>核心功能与特色</h2>
+            </div>
+            
+            <div class="feature-tabs">
+                <button class="tab-btn active">多模态数据库</button>
+                <button class="tab-btn">可视化平台</button>
+                <button class="tab-btn">AI技术应用</button>
+                <button class="tab-btn">文旅融合</button>
+            </div>
+            
+            <div class="feature-content">
+                <div class="feature-item">
+                    <div class="feature-img" style="background-image: url('https://images.unsplash.com/photo-1552422535-c45813c61732?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="feature-text">
+                        <h3>吴歌地理分布图</h3>
+                        <p>交互式地图展示苏州、无锡等大运河沿线吴语地区吴歌分布，可定位查看各地区特色作品与传承人信息。</p>
+                        <a href="#" class="btn btn-outline">探索地图 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-img" style="background-image: url('https://images.unsplash.com/photo-1506784365847-bbad939e9335?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="feature-text">
+                        <h3>百年吴歌时间轴</h3>
+                        <p>从明清时期到当代的吴歌发展脉络，按时间、流派、主题多维度展示代表性作品与历史事件。</p>
+                        <a href="#" class="btn btn-outline">浏览时间轴 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-img" style="background-image: url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                    <div class="feature-text">
+                        <h3>AI语音搜索</h3>
+                        <p>通过方言语音识别技术，使用吴语搜索吴歌内容，支持歌词内容检索与相似旋律匹配。</p>
+                        <a href="#" class="btn btn-outline">体验AI搜索 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据统计 -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>5,280+</h3>
+                    <p>吴歌文本记录</p>
+                </div>
+                <div class="stat-item">
+                    <h3>1,950+</h3>
+                    <p>小时音频资料</p>
+                </div>
+                <div class="stat-item">
+                    <h3>620+</h3>
+                    <p>高清视频素材</p>
+                </div>
+                <div class="stat-item">
+                    <h3>120+</h3>
+                    <p>位传承人档案</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 合作伙伴 -->
+    <section class="partners">
+        <div class="container">
+            <div class="section-title">
+                <h2>合作伙伴</h2>
+            </div>
+            
+            <div class="partner-logos">
+                <img src="https://via.placeholder.com/120x60?text=非遗中心" alt="非遗中心" class="partner-logo">
+                <img src="https://via.placeholder.com/120x60?text=苏州大学" alt="苏州大学" class="partner-logo">
+                <img src="https://via.placeholder.com/120x60?text=无锡文化局" alt="无锡文化局" class="partner-logo">
+                <img src="https://via.placeholder.com/120x60?text=大运河管委会" alt="大运河管委会" class="partner-logo">
+                <img src="https://via.placeholder.com/120x60?text=江南文化研究所" alt="江南文化研究所" class="partner-logo">
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>江苏吴歌数据库</h3>
+                    <p>以数字化技术为核心的多模态动态数据库，系统性保护与传承国家级非物质文化遗产江苏吴歌。</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon"><i class="fab fa-weixin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-weibo"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-qq"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>快速链接</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">吴歌地图</a></li>
+                        <li><a href="#">时间轴</a></li>
+                        <li><a href="#">多媒体库</a></li>
+                        <li><a href="#">研究资源</a></li>
+                        <li><a href="#">文旅应用</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>资源下载</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">学术研究数据集</a></li>
+                        <li><a href="#">教学资源包</a></li>
+                        <li><a href="#">文旅项目手册</a></li>
+                        <li><a href="#">吴歌精选专辑</a></li>
+                        <li><a href="#">API文档</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>联系我们</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> 江苏省苏州市姑苏区</li>
+                        <li><i class="fas fa-phone"></i> 0512-xxxxxxx</li>
+                        <li><i class="fas fa-envelope"></i> contact@wuge-database.cn</li>
+                        <li><i class="fas fa-clock"></i> 周一至周五 9:00-17:00</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 江苏吴歌数据库 - 国家级非物质文化遗产数字化保护平台 | 苏ICP备xxxxxxxx号</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的标签切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 这里可以添加实际的内容切换功能
+                });
+            });
+            
+            // 语音搜索按钮提示
+            const voiceSearch = document.querySelector('.voice-search');
+            voiceSearch.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('语音搜索功能：请使用吴语方言说出您要搜索的内容，系统将自动识别并检索相关吴歌资源。');
+            });
+        });
+    </script>
+</body>
+</html>
